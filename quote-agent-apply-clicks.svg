@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+<title id="title">Apply clicks — Mid-April to September 2026</title>
+<desc id="desc">Weekly apply clicks reconstructed approximately from the supplied chart. The series fluctuates, ending higher than it begins. This is click volume, not purchase rate.</desc>
+<rect width="1200" height="660" rx="16" fill="#24272d"/>
+<g font-family="Source Sans 3,Arial,sans-serif" fill="#f3f3f0">
+<text x="32" y="52" font-size="29" font-weight="600">Apply clicks</text>
+<text x="32" y="84" font-size="17" fill="#b9bcb5">15 April–September 2026</text>
+<path d="M 110 550.0 H 1155" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="92" y="557.0" text-anchor="end" font-size="21">0</text>
+<path d="M 110 440.0 H 1155" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="92" y="447.0" text-anchor="end" font-size="21">300</text>
+<path d="M 110 330.0 H 1155" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="92" y="337.0" text-anchor="end" font-size="21">600</text>
+<path d="M 110 220.0 H 1155" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="92" y="227.0" text-anchor="end" font-size="21">900</text>
+<path d="M 110 110.0 H 1155" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="92" y="117.0" text-anchor="end" font-size="21">1,200</text>
+<path d="M 110.0 110 V 550" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="110.0" y="588" text-anchor="middle" font-size="20">15 Apr</text>
+<path d="M 215.82278481012656 110 V 550" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="215.82278481012656" y="588" text-anchor="middle" font-size="20">May</text>
+<path d="M 420.8544303797468 110 V 550" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="420.8544303797468" y="588" text-anchor="middle" font-size="20">Jun</text>
+<path d="M 619.2721518987341 110 V 550" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="619.2721518987341" y="588" text-anchor="middle" font-size="20">Jul</text>
+<path d="M 824.3037974683544 110 V 550" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="824.3037974683544" y="588" text-anchor="middle" font-size="20">Aug</text>
+<path d="M 1029.3354430379748 110 V 550" stroke="#737779" stroke-width="1" opacity=".55"/>
+<text x="1029.3354430379748" y="588" text-anchor="middle" font-size="20">Sep</text>
+<path d="M 110.00 287.47 L 156.30 274.27 L 202.59 259.60 L 248.89 257.40 L 295.19 269.87 L 341.49 282.70 L 387.78 251.90 L 434.08 229.17 L 480.38 244.20 L 526.68 260.33 L 572.97 242.73 L 619.27 224.03 L 665.57 251.53 L 711.87 268.40 L 758.16 248.97 L 804.46 246.40 L 850.76 251.53 L 897.06 223.30 L 943.35 232.83 L 989.65 206.07 L 1035.95 208.27 L 1082.25 235.40 L 1128.54 225.13 L 1155.00 219.63" fill="none" stroke="#00bc29" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="32" y="632" font-size="16" fill="#b9bcb5">Approximate weekly values and dates reconstructed from the supplied chart.</text>
+</g></svg>
