@@ -76,3 +76,23 @@ hr{border:0;border-top:1px solid #45483c;margin:40px 0}
 @media(min-width:601px) and (max-width:1400px){.impact-grid{flex-wrap:wrap}.impact-tile{flex:1 1 calc(50% - 16px)}}
 @media(max-width:600px){.case-hero-image{margin-bottom:28px}.case-hero-image img,.case-hero-image .image-expand{border-radius:12px}.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.impact-tile{padding:16px 12px}.impact-tile dd{font-size:1.8rem}.impact-tile p{font-size:.8125rem}}
 @media(max-width:360px){.impact-grid{grid-template-columns:1fr}}
+
+/* Keep supporting Metro examples readable without enlarging them into posters. */
+.case-body .media-phone-contained .image-expand{display:flex;justify-content:center;background:#000;padding:24px}
+.case-body .media-phone-contained img{width:auto;max-width:100%;height:auto;max-height:580px;object-fit:contain}
+.case-body .media-diagram-contained{max-width:620px;margin-left:auto;margin-right:auto}
+@media(max-width:600px){.case-body .media-phone-contained .image-expand{padding:16px}.case-body .media-phone-contained img{max-height:460px}}
+
+.case-body .feature-icon{margin:0;background:none}
+.feature-icon span{display:block;width:112px;height:112px;background-image:url('utopicode-icons.png');background-size:500% auto;background-repeat:no-repeat}
+.case-body .column_list:has(> .column > .feature-icon):has(> .column:nth-child(2):last-child){display:grid;grid-template-columns:112px minmax(0,1fr);gap:28px;align-items:start}
+.case-body .column_list:has(> .column > .feature-icon):has(> .column:nth-child(2):last-child) > .column{min-width:0;width:auto}
+@media(max-width:600px){.case-body .column_list:has(> .column > .feature-icon):has(> .column:nth-child(2):last-child){grid-template-columns:72px minmax(0,1fr);gap:16px}.feature-icon span{width:72px;height:72px}}
+
+/* Mask the noisy exported shadow without altering the dashboard UI. */
+.case-body .dashboard-clean .image-expand{position:relative;aspect-ratio:1640/1110;overflow:hidden;background:#fff;border-radius:16px}
+.case-body .dashboard-clean img{position:absolute;width:105.854%;max-width:none;height:auto;left:-2.927%;top:-.721%;border-radius:0}
+.image-dialog img[src*="cbc623cc-6174-4141-ba4c-ba8e90ebbed0"]{clip-path:inset(.7% 2.8% 7.3% round 16px)}
+
+.perfect-fit-icon span{background-image:url('perfect-fit-icons.png');background-size:600% auto}
+.perfect-fit-icon span{clip-path:inset(8% 6% round 18%)}
