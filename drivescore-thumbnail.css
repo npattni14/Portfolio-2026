@@ -1,0 +1,14 @@
+@font-face{font-family:QA Thumbnail Averta;src:url('drivescore-assets/fonts/averta/Averta-Semibold.otf') format('opentype');font-weight:600;font-display:swap}
+.project-card-shell{position:relative;min-width:0}.project-image.drivescore.qa-thumbnail{position:relative;display:grid;place-items:center;background:linear-gradient(180deg,#36466500 0%,#364665cc 95%),linear-gradient(-26.45574deg,#4fcecb 35.723%,#435880 85.752%);color:#fff;isolation:isolate}
+.qa-thumbnail-lockup{position:relative;width:320px;height:140px;max-width:100%}.qa-thumbnail-star{position:absolute;left:calc(50% - 40px);top:30px;width:80px;height:80px;animation:qa-thumb-arrive 8s cubic-bezier(.22,.8,.2,1) infinite}.qa-thumbnail-star>img,.qa-thumbnail-star>svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.project-card:hover .qa-thumbnail-star>img{transform:none}.qa-thumbnail-star.is-ready>img{visibility:hidden}.qa-thumbnail-text{position:absolute;left:calc(50% - 58px);top:50px;font:600 36px/1.2 QA Thumbnail Averta,sans-serif;white-space:nowrap;animation:qa-thumb-title 8s cubic-bezier(.22,.8,.2,1) infinite}
+.qa-thumbnail-toggle{position:absolute;right:28px;top:28px;z-index:2;border:1px solid #e2f9ff70;border-radius:999px;padding:5px 11px;background:#20334b50;color:#fff;font:400 12px/1.3 var(--sans);cursor:pointer;backdrop-filter:blur(8px)}.qa-thumbnail-toggle:hover{background:#20334b90}.qa-thumbnail-toggle:focus-visible{outline:2px solid #baffee;outline-offset:4px}.qa-thumbnail.is-paused *{animation-play-state:paused!important}
+@keyframes qa-thumb-arrive{0%,5%{opacity:0;transform:translate(0,150px) scale(.25) rotate(-180deg)}22%,30%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}43%,85%{opacity:1;transform:translate(-108px,0) scale(.85)}96%,100%{opacity:0;transform:translate(-108px,0) scale(.85)}}
+@keyframes qa-thumb-title{0%,34%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(-12px)}56%,85%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(0)}96%,100%{opacity:0;clip-path:inset(0 0 0 0)}}
+@media(max-width:400px){.qa-thumbnail-lockup{transform:scale(.85)}}
+@media(prefers-reduced-motion:reduce){.qa-thumbnail *{animation:none!important}.qa-thumbnail-star{opacity:1;transform:translate(-108px,0) scale(.85)}.qa-thumbnail-text{opacity:1;clip-path:none}.qa-thumbnail-toggle{display:none}}
+
+/* Centre the complete lockup and retain generous, equal side margins. */
+.qa-thumbnail-lockup{flex-shrink:0;width:320px;max-width:none;transform:scale(var(--qa-thumb-scale,.75));transform-origin:center}
+.qa-thumbnail-text{left:94px}
+.qa-thumbnail-star{left:120px}
+@keyframes qa-thumb-arrive{0%,5%{opacity:0;transform:translate(0,150px) scale(.25) rotate(-180deg)}22%,30%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}43%,85%{opacity:1;transform:translate(-108px,0) scale(.85)}96%,100%{opacity:0;transform:translate(-108px,0) scale(.85)}}

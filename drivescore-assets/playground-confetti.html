@@ -1,0 +1,1186 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quote Agent — Confetti playground</title><link rel="stylesheet" href="portfolio-fonts.css"><style>
+/* ---------------------------------------------------------------------------
+   Deliberately single-theme. This page is a colour-judgement stage: the teal
+   congratulations screen is being reproduced exactly, and the confetti palette
+   is the thing under review. A surround that flipped with the viewer's OS theme
+   would change the perceived colour of both. So every colour below is painted
+   explicitly and none of it reacts to prefers-color-scheme.
+   --------------------------------------------------------------------------- */
+
+:root {
+    /* studio chrome — slate neutrals biased toward the stage's teal */
+    --chrome-bg: #141821;
+    --chrome-surface: #1d222e;
+    --chrome-surface-hi: #262c3a;
+    --chrome-line: #333a4b;
+    --chrome-text: #f1f4f9;
+    --chrome-text-dim: #9aa6bd;
+    --chrome-text-faint: #6d798f;
+    --chrome-accent: #baffee;
+
+    /* the congratulations screen itself */
+    --stage-top: #427f8b;
+    --stage-bottom: #2c6073;
+    --card-fill: rgba(30, 45, 74, 0.55);
+    --white: #ffffff;
+
+    /* Quote Agent glow ring, as shipped */
+    --qa-ring: linear-gradient(90deg, #95eaff 0%, #9fb1ff 50%, #f3beff 100%);
+
+    --font-sans: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--chrome-bg);
+    color: var(--chrome-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ----------------------------- studio chrome ----------------------------- */
+
+.bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--chrome-line);
+    background: var(--chrome-surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-right: auto;
+}
+
+.brand strong {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.brand span {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--chrome-text-faint);
+}
+
+.tabs {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 10px;
+    background: var(--chrome-bg);
+    border: 1px solid var(--chrome-line);
+}
+
+.tab {
+    appearance: none;
+    border: 0;
+    border-radius: 7px;
+    padding: 8px 15px;
+    background: transparent;
+    color: var(--chrome-text-dim);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 550;
+    cursor: pointer;
+    transition: background 120ms ease, color 120ms ease;
+}
+
+.tab:hover { color: var(--chrome-text); background: var(--chrome-surface-hi); }
+
+.tab[aria-pressed='true'] {
+    background: var(--chrome-accent);
+    color: #12303a;
+    font-weight: 650;
+}
+
+.tab:focus-visible,
+.replay:focus-visible,
+.view-option:focus-visible,
+.ctl-group button:focus-visible { outline: 2px solid var(--chrome-accent); outline-offset: 2px; }
+
+.view-switch {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding-left: 18px;
+    border-left: 1px solid var(--chrome-line);
+}
+
+.view-switch-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--chrome-text-faint);
+}
+
+.view-toggle {
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--chrome-line);
+    border-radius: 9px;
+    background: var(--chrome-bg);
+}
+
+.view-option {
+    appearance: none;
+    border: 0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    background: transparent;
+    color: var(--chrome-text-dim);
+    font: 550 12px/1 var(--font-sans);
+    cursor: pointer;
+}
+
+.view-option:hover { color: var(--chrome-text); }
+
+.view-option[aria-pressed='true'] {
+    background: var(--chrome-accent);
+    color: #12303a;
+}
+
+.replay {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--chrome-line);
+    border-radius: 8px;
+    padding: 9px 16px;
+    background: var(--chrome-surface-hi);
+    color: var(--chrome-text);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 550;
+    cursor: pointer;
+}
+
+.replay:hover { border-color: var(--chrome-text-faint); }
+
+/* ------------------------------- workbench ------------------------------- */
+
+.workbench {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+    min-height: calc(100vh - 77px);
+}
+
+.controls {
+    position: sticky;
+    top: 77px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: calc(100vh - 77px);
+    padding: 22px 20px 28px;
+    overflow-y: auto;
+    border-left: 1px solid var(--chrome-line);
+    background: var(--chrome-surface);
+}
+
+.controls-intro h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 650;
+}
+
+.controls-intro p {
+    margin: 5px 0 0;
+    color: var(--chrome-text-dim);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.ctl { display: flex; flex-direction: column; gap: 5px; }
+
+.ctl-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--chrome-text-faint);
+}
+
+.ctl-top b { color: var(--chrome-text-dim); font-weight: 500; }
+.ctl-top i { font-style: normal; color: var(--chrome-accent); font-variant-numeric: tabular-nums; }
+
+.ctl-name {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: max-content;
+    max-width: calc(100% - 54px);
+    cursor: help;
+}
+
+.ctl-name:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--chrome-accent);
+    outline-offset: 3px;
+}
+
+.info-dot {
+    display: inline-grid;
+    place-items: center;
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+    border: 1px solid var(--chrome-text-faint);
+    border-radius: 50%;
+    color: var(--chrome-text-dim);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.tooltip {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 244px;
+    padding: 10px 11px;
+    border: 1px solid var(--chrome-line);
+    border-radius: 8px;
+    background: #10141c;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+    color: var(--chrome-text);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.45;
+    text-transform: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-3px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+    pointer-events: none;
+}
+
+.ctl-name:hover .tooltip,
+.ctl-name:focus .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.ctl input[type='range'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--chrome-line);
+    cursor: pointer;
+}
+
+.ctl input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 13px;
+    height: 13px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--chrome-accent);
+    cursor: pointer;
+}
+
+.ctl input[type='range']::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--chrome-accent);
+    cursor: pointer;
+}
+
+.ctl input[type='range']:focus-visible { outline: 2px solid var(--chrome-accent); outline-offset: 4px; }
+
+.ctl-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--chrome-text-faint);
+}
+
+.ctl-group::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--chrome-line);
+}
+
+.ctl-group button {
+    appearance: none;
+    border: 1px solid var(--chrome-line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    background: transparent;
+    color: var(--chrome-text-dim);
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+}
+
+.ctl-group button:hover { color: var(--chrome-text); border-color: var(--chrome-text-faint); }
+
+/* -------------------------------- stage --------------------------------- */
+
+.stage-wrap {
+    min-width: 0;
+    padding: 26px 22px 40px;
+    overflow: hidden;
+}
+
+.stage {
+    position: relative;
+    max-width: 1180px;
+    margin: 0 auto;
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(168deg, var(--stage-top) 0%, var(--stage-bottom) 62%, #2a5c72 100%);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    isolation: isolate;
+    transition: width 220ms ease, min-height 220ms ease;
+}
+
+.stage[data-viewport='desktop'] { width: 100%; }
+
+.stage[data-viewport='mobile'] {
+    width: min(375px, 100%);
+    min-height: 1037px;
+}
+
+.stage[data-viewport='mobile'] .screen { padding: 34px 16px 30px; }
+.stage[data-viewport='mobile'] .hero h1 { font-size: 36px; line-height: 44px; }
+.stage[data-viewport='mobile'] .hero .sub { font-size: 16px; }
+.stage[data-viewport='mobile'] .amount strong { font-size: 64px; }
+.stage[data-viewport='mobile'] .columns {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 36px;
+}
+.stage[data-viewport='mobile'] .cover { font-size: 9px; }
+.stage[data-viewport='mobile'] .cover div { padding: 9px 3px; }
+.stage[data-viewport='mobile'] .compare-row { padding-inline: 14px; }
+
+/* Two layers. Confetti in flight passes over the content; once a triangle lands
+   it is drawn on the lower canvas instead, so the settled scatter sits behind
+   the cards rather than on top of them. */
+
+.fx {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#fx-back { z-index: 1; }
+#fx-front { z-index: 4; }
+
+.screen {
+    position: relative;
+    z-index: 2;
+    padding: 46px 40px 40px;
+    color: var(--white);
+    text-align: center;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: clamp(34px, 4.4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+}
+
+.hero .sub { margin: 6px 0 0; font-size: 15px; opacity: 0.92; }
+.hero .saved-label { margin: 26px 0 0; font-size: 15px; opacity: 0.92; }
+
+.amount {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.amount strong {
+    font-size: clamp(56px, 7.4vw, 86px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+}
+
+.amount span { font-size: 17px; opacity: 0.92; }
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    background: var(--chrome-accent);
+    color: #14343d;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 30px;
+    margin-top: 54px;
+    text-align: left;
+}
+
+.columns h2 {
+    margin: 0 0 16px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* quote card — carries the shipped Quote Agent ring + bloom */
+
+.quote-card {
+    position: relative;
+    border-radius: 18px;
+    background: var(--card-fill);
+    overflow: hidden;
+    box-shadow: 0 0 6px rgba(149, 234, 255, 0.35), 0 0 12px rgba(243, 190, 255, 0.22);
+}
+
+.quote-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    background: var(--qa-ring);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.quote-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 20px 14px;
+}
+
+.logo {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.logo i {
+    display: block;
+    padding: 3px 6px;
+    border-radius: 3px;
+    background: #e8490f;
+    color: #fff;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.freq {
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.price {
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+}
+
+.price small { font-size: 16px; font-weight: 600; }
+
+.excess { padding: 0 20px 18px; font-size: 13.5px; opacity: 0.9; }
+.excess b { font-weight: 700; opacity: 1; }
+
+.cover {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    font-size: 11.5px;
+    text-align: center;
+}
+
+.cover div { padding: 11px 8px; background: rgba(255, 255, 255, 0.09); }
+.cover .lbl { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.88; }
+.cover .val { background: rgba(255, 255, 255, 0.045); opacity: 0.92; min-height: 58px; }
+.cover .tick { color: var(--chrome-accent); font-size: 15px; display: block; margin-bottom: 2px; }
+
+/* comparison table */
+
+.compare { border-radius: 14px; overflow: hidden; background: rgba(22, 38, 66, 0.5); }
+
+.compare-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    background: rgba(14, 26, 50, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.compare-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 15px 18px 18px;
+    font-size: 14px;
+}
+
+.compare-row span { display: block; opacity: 0.85; margin-bottom: 5px; font-size: 13.5px; }
+.compare-row b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.compare-row div:last-child { text-align: right; }
+.compare-row div:last-child b { color: var(--chrome-accent); }
+
+.cta {
+    display: block;
+    width: 100%;
+    margin-top: 40px;
+    padding: 17px;
+    border: 0;
+    border-radius: 8px;
+    background: #1263e0;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+/* --------------------------------- notes -------------------------------- */
+
+.notes {
+    max-width: 1180px;
+    margin: 26px auto 0;
+    padding: 16px 20px;
+    border: 1px solid var(--chrome-line);
+    border-radius: 10px;
+    background: var(--chrome-surface);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--chrome-text-dim);
+}
+
+.notes b { color: var(--chrome-text); font-weight: 600; }
+
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+.swatch {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px 5px 6px;
+    border-radius: 6px;
+    background: var(--chrome-bg);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--chrome-text-dim);
+}
+
+.swatch i { width: 13px; height: 13px; border-radius: 3px; }
+
+.developer-handoff {
+    max-width: 1180px;
+    margin: 18px auto 0;
+    padding: 18px 20px;
+    border: 1px solid var(--chrome-line);
+    border-radius: 10px;
+    background: var(--chrome-surface);
+}
+
+.developer-handoff h2 { margin: 0; font-size: 16px; }
+.developer-handoff p { margin: 6px 0 14px; color: var(--chrome-text-dim); font-size: 12.5px; line-height: 1.55; }
+
+.code-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.code-actions button,
+.code-actions a {
+    appearance: none;
+    border: 1px solid var(--chrome-line);
+    border-radius: 7px;
+    padding: 8px 11px;
+    background: var(--chrome-surface-hi);
+    color: var(--chrome-text);
+    font: 550 12px/1 var(--font-sans);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.code-actions button:hover,
+.code-actions a:hover { border-color: var(--chrome-text-faint); }
+
+.developer-handoff pre {
+    max-height: 520px;
+    margin: 0;
+    padding: 16px;
+    overflow: auto;
+    border: 1px solid var(--chrome-line);
+    border-radius: 8px;
+    background: #10141c;
+    color: #dbe5f5;
+    font: 11.5px/1.6 var(--font-mono);
+    tab-size: 2;
+    white-space: pre;
+}
+
+@media (max-width: 900px) {
+    .bar { position: static; }
+    .view-switch { margin-left: auto; }
+    .workbench { grid-template-columns: minmax(0, 1fr) 280px; }
+    .controls { position: static; top: auto; height: auto; }
+}
+
+@media (max-width: 700px) {
+    .workbench { display: flex; flex-direction: column; }
+    .stage-wrap { width: 100%; order: 1; }
+    .controls {
+        width: 100%;
+        order: 2;
+        border-top: 1px solid var(--chrome-line);
+        border-left: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .bar { gap: 12px; }
+    .brand { margin-right: 0; width: 100%; }
+    .tabs { order: 3; width: 100%; overflow-x: auto; }
+    .tab { flex: 1 0 auto; }
+    .view-switch { margin-left: 0; padding-left: 0; border-left: 0; }
+}
+
+html,body{min-height:0;overflow:hidden;background:#19212b}body{font-family:'Source Sans 3',sans-serif}.workbench{grid-template-columns:minmax(0,1fr) 260px;min-height:0;align-items:stretch}.stage-wrap{padding:24px;display:flex}.stage{width:100%;display:flex;align-items:center;box-shadow:none;border-radius:16px}.screen{padding:32px 22px;width:100%}.hero h1{font-size:32px;line-height:1.2}.hero .sub{font-size:15px}.amount strong{font-size:62px}.columns{grid-template-columns:1fr;gap:20px;margin-top:28px}.columns>div:nth-child(2){display:none}.cover{display:none}.quote-card{max-width:400px;margin:auto}.quote-head{padding:16px}.excess{font-size:10px}.hero .saved-label{margin-top:24px}.hero .pill{font-size:10px}.controls{position:relative;top:auto;height:auto;padding:32px 24px;overflow:visible;gap:0;background:#24303e}.control-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#baffee}.controls h2{font-size:25px;line-height:1.2;margin:12px 0}.control-description{font-size:14px;color:#cbddf2;margin:0 0 26px;line-height:1.5}.simple-control{display:block;margin:0 0 23px;font-size:14px}.simple-control>span{display:flex;justify-content:space-between;margin-bottom:10px}.simple-control output{color:#baffee;font-variant-numeric:tabular-nums}.simple-control input{width:100%;accent-color:#baffee;cursor:pointer}.settle-control{border-top:1px solid #cbddf233;border-bottom:1px solid #cbddf233;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}.settle-control input{width:20px;height:20px;accent-color:#baffee}.demo-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.demo-actions button{border:1px solid #cbddf255;border-radius:8px;padding:11px 12px;background:transparent;color:white;font:600 13px 'Source Sans 3',sans-serif;cursor:pointer}.demo-actions button:first-child{background:#baffee;border-color:#baffee;color:#193b47}.demo-actions button:hover{filter:brightness(1.1)}button:focus-visible,input:focus-visible{outline:2px solid #baffee;outline-offset:4px}#demo-status{font-size:11px;line-height:1.5;color:#cbddf2;min-height:34px;margin:16px 0 0}.logo img{width:52px;height:52px;object-fit:contain;border-radius:50%}.logo{background:white;overflow:hidden}.screen{font-family:'Avenir Next','Segoe UI',sans-serif}.pill{gap:6px}.pill img{width:14px;height:14px}@media(max-width:700px){.workbench{display:flex;flex-direction:column}.stage-wrap{padding:16px;order:1}.controls{order:2;padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.control-eyebrow,.controls h2,.control-description,.settle-control,.demo-actions,#demo-status{grid-column:1/-1}.screen{padding:28px 16px}.hero h1{font-size:30px}.amount strong{font-size:56px}.columns{margin-top:24px}.controls .simple-control{margin-bottom:22px}.controls h2{font-size:24px}.control-description{margin-bottom:22px}.hero .pill{padding:7px 8px}.demo-actions{margin-top:20px}}
+</style></head><body><main class="workbench"><div class="stage-wrap"><div class="stage" id="stage" data-viewport="desktop"><canvas class="fx" id="fx-back"></canvas><canvas class="fx" id="fx-front"></canvas>        <div class="screen">
+            <div class="hero">
+                <h1>Congratulations!</h1>
+                <p class="sub">You&rsquo;ve got a new lower price</p>
+                <p class="saved-label">You saved</p>
+                <div class="amount"><strong>&pound;98</strong><span>/year</span></div>
+                <div class="pill"><img src="playground-assets/quote-agent-icon.png" alt=""> &pound;98 less than your original quote</div>
+            </div>
+
+            <div class="columns">
+                <div>
+                    <h2>Your new lowest annual quote price</h2>
+                    <div class="quote-card">
+                        <div class="quote-head">
+                            <div class="logo"><img src="playground-assets/admiral.png" alt="Admiral" width="64" height="64"></div>
+                            <div>
+                                <div class="freq">Pay annually</div>
+                                <div class="price">&pound;219<small>.01</small></div>
+                            </div>
+                        </div>
+                        <div class="excess"><b>Excess:</b> Voluntary &pound;100 | Compulsory &pound;200 | Total &pound;300</div>
+                        <div class="cover">
+                            <div class="lbl">Legal cover</div>
+                            <div class="lbl">Courtesy car</div>
+                            <div class="lbl">Breakdown cover</div>
+                            <div class="lbl">Personal accident</div>
+                            <div class="val">Available for &pound;29.99/yr</div>
+                            <div class="val"><span class="tick">&#10003;</span>Included</div>
+                            <div class="val">Available for &pound;39.99/yr</div>
+                            <div class="val">N/A</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2>How your previous quotes compare</h2>
+                    <div class="compare">
+                        <div class="compare-head">Your previous quote</div>
+                        <div class="compare-row">
+                            <div><span>Original</span><b>&pound;317.01</b></div>
+                            <div><span>New price</span><b>&pound;219.01</b></div>
+                            <div><span>Saved</span><b>&pound;98</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+</div></div><aside class="controls" id="controls" aria-label="Animation settings"></aside></main><script>const PALETTE = ['#FFB5EF', '#A188B7', '#BAFFEE', '#7EB1B9', '#E1C9FF', '#9194C1'];
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------------------------------------------------------------------
+   Particle engine. Physics follows the canvas-confetti model that magicui wraps:
+   a per-particle 2D launch angle inside a spread arc, velocity that decays each
+   tick, constant gravity, and a wobble that flips the shape to fake depth. The
+   shape is ours — a triangle, per the Figma frame — rather than the library's
+   square/circle.
+   --------------------------------------------------------------------------- */
+
+// back = landed confetti, sits behind the screen content.
+// front = confetti still in flight, passes over it.
+const backCanvas = document.getElementById('fx-back');
+const frontCanvas = document.getElementById('fx-front');
+const bctx = backCanvas.getContext('2d');
+const fctx = frontCanvas.getContext('2d');
+let W = 0, H = 0;
+
+function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = frontCanvas.getBoundingClientRect();
+    W = rect.width;
+    H = rect.height;
+    [backCanvas, frontCanvas].forEach(function (c) {
+        c.width = Math.round(W * dpr);
+        c.height = Math.round(H * dpr);
+        c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+    });
+}
+
+function clearBoth() {
+    bctx.clearRect(0, 0, W, H);
+    fctx.clearRect(0, 0, W, H);
+}
+
+let particles = [];
+
+function spawn(opts) {
+    const o = Object.assign({
+        particleCount: 50,
+        angle: 90,
+        spread: 45,
+        startVelocity: 45,
+        decay: 0.9,
+        gravity: 1,
+        drift: 0,
+        ticks: 200,
+        scalar: 1,
+        originX: 0.5,
+        originY: 0.5,
+        stickChance: 0.25,
+        // Scatter each particle across the full width instead of sharing one
+        // origin — used by the fall, which comes down as a curtain, not a jet.
+        originXSpread: false,
+        driftJitter: 0
+    }, opts);
+
+    const radAngle = o.angle * Math.PI / 180;
+    const radSpread = o.spread * Math.PI / 180;
+
+    for (let i = 0; i < o.particleCount; i++) {
+        // Size variance mirrors the Figma frame, where triangles run roughly 5-20px.
+        const scalar = o.scalar * (0.55 + Math.random() * 0.85);
+
+        particles.push({
+            x: (o.originXSpread ? Math.random() : o.originX) * W,
+            y: o.originY * H + (GLOBALS.yOffset.value / 100) * H,
+            angle2D: -radAngle + (0.5 * radSpread - Math.random() * radSpread),
+            velocity: o.startVelocity * 0.5 + Math.random() * o.startVelocity,
+            decay: o.decay,
+            gravity: o.gravity * 3,
+            drift: o.drift + (o.driftJitter ? (Math.random() - 0.5) * 2 * o.driftJitter : 0),
+            wobble: Math.random() * 10,
+            wobbleSpeed: 0.05 + Math.random() * 0.06,
+            tilt: Math.random() * Math.PI * 2,
+            tiltSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.06 + Math.random() * 0.08),
+            colour: PALETTE[(Math.random() * PALETTE.length) | 0],
+            scalar: scalar,
+            tick: 0,
+            // Staggered rest points, so the piece comes to a halt in a natural
+            // scatter rather than every triangle stopping on the same frame.
+            settleAt: o.ticks * (0.45 + Math.random() * 0.75),
+            settled: false,
+            // Candidate for sticking. The budget in step() has the final say, so
+            // this only needs to nominate comfortably more than will be kept.
+            sticky: Math.random() < o.stickChance,
+            fade: 0
+        });
+    }
+}
+
+const ON_SCREEN = p => p.y < H + 60 && p.y > -120 && p.x > -80 && p.x < W + 80;
+
+// Ticks spent easing to a halt. Without this the triangles stop dead on one
+// frame, which reads as a dropped animation rather than confetti coming to rest.
+const DAMP_TICKS = 20;
+
+// Ticks a non-sticking particle takes to fade away once it is past its settle point.
+const FADE_TICKS = 34;
+
+/* How many triangles are left on screen at the end. The burst is busy; what
+   remains is a deliberate scatter. Scaled off width so a phone lands near the
+   ~30 in the reference screenshot and a desktop stage doesn't look bare across a
+   much larger area. This is the one number to turn if the density is off. */
+// Auto-scales with width until the slider is touched, after which that wins.
+const autoBudget = () => Math.round(20 + W / 42);
+const restBudget = () => (GLOBALS.keep.value === null ? autoBudget() : GLOBALS.keep.value);
+
+/* Keepers may only land in the top of the screen, so the settled confetti frames
+   the headline and the price rather than drifting down over the cards. Anything
+   that reaches its rest point below this line is demoted and fades out instead. */
+const HEADER_BAND = () => GLOBALS.band.value / 100;
+
+let resting = 0;
+
+function step(p) {
+    if (p.settled) return ON_SCREEN(p);
+
+    const remaining = p.settleAt - p.tick;
+    // Only the keepers ease to a stop; everything else keeps falling and fades.
+    const damp = (p.sticky && remaining < DAMP_TICKS) ? Math.max(0, remaining / DAMP_TICKS) : 1;
+
+    p.x += (Math.cos(p.angle2D) * p.velocity + p.drift) * damp;
+    p.y += (Math.sin(p.angle2D) * p.velocity + p.gravity) * damp;
+    p.velocity *= p.decay;
+    p.wobble += p.wobbleSpeed * damp;
+    p.tilt += p.tiltSpeed * damp;
+    p.tick++;
+
+    if (p.tick >= p.settleAt) {
+        if (p.sticky && resting < restBudget() && p.y < H * HEADER_BAND()) {
+            p.settled = true;
+            resting++;
+        } else {
+            // Budget spent, or it came to rest too low to be part of the header
+            // scatter. Either way it is demoted and fades out.
+            p.sticky = false;
+            p.fade++;
+        }
+    }
+
+    return ON_SCREEN(p) && (p.sticky || p.fade < FADE_TICKS);
+}
+
+function paint(p, ctx) {
+    const size = 11 * p.scalar;
+    ctx.save();
+    // Keepers hold at full opacity — depth comes from the palette's muted tones,
+    // not from fading. Everything else fades out on its way past.
+    if (!p.sticky) ctx.globalAlpha = Math.max(0, 1 - p.fade / FADE_TICKS);
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.tilt);
+
+    // Horizontal squash on the wobble reads as the flat triangle tumbling in 3D.
+    // As a particle eases to rest the squash is blended back out to full width,
+    // otherwise one that happens to stop edge-on would settle as an invisible
+    // sliver.
+    const raw = Math.cos(p.wobble);
+    const remaining = p.settleAt - p.tick;
+    // Only keepers unwind the squash; the ones falling past keep tumbling.
+    const t = !p.sticky ? 1 : (p.settled ? 0 : Math.min(1, Math.max(0, remaining / DAMP_TICKS)));
+    ctx.scale(raw * t + (raw >= 0 ? 1 : -1) * (1 - t), 1);
+
+    ctx.fillStyle = p.colour;
+    ctx.beginPath();
+    ctx.moveTo(0, -size * 0.62);
+    ctx.lineTo(size * 0.56, size * 0.5);
+    ctx.lineTo(-size * 0.56, size * 0.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
+let raf = null;
+// True while a variant's spawner is still firing, so the loop keeps running
+// through the quiet gaps between volleys.
+let spawning = false;
+
+function loop() {
+    clearBoth();
+
+    let moving = 0;
+    particles = particles.filter(function (p) {
+        const alive = step(p);
+        if (alive) {
+            // The moment a triangle lands it drops to the layer behind the content.
+            paint(p, p.settled ? bctx : fctx);
+            if (!p.settled) moving++;
+        }
+        return alive;
+    });
+
+    // Once everything has come to rest there is nothing left to redraw. Stopping
+    // here leaves the last frame on the canvas, so the settled confetti simply
+    // stays on screen at no ongoing cost.
+    raf = (moving > 0 || spawning) ? requestAnimationFrame(loop) : null;
+}
+
+function pump() {
+    if (!raf) raf = requestAnimationFrame(loop);
+}
+
+/* --------------------------------- variants ------------------------------ */
+
+// Interval ids and rAF ids live in separate id spaces, so each handle is tagged
+// with the canceller that actually owns it.
+let handles = [];
+
+function clearTimers() {
+    handles.forEach(function (h) {
+        if (h.kind === 'interval') clearInterval(h.id);
+        else cancelAnimationFrame(h.id);
+    });
+    handles = [];
+    spawning = false;
+}
+
+const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+/* Every tunable number lives in a `params` block so the controls above the stage
+   can drive it. `run` reads the current values rather than hard-coded constants,
+   so a slider change takes effect on the next replay. */
+
+const VARIANTS = {
+    basic: {
+        label: 'Basic',
+        params: {
+            particleCount: { label: 'particle count', min: 20, max: 300, step: 10, value: 100 },
+            startVelocity: { label: 'launch speed', min: 10, max: 90, step: 1, value: 45 },
+            gravity: { label: 'gravity', min: 0.2, max: 2, step: 0.05, value: 1 },
+            ticks: { label: 'settling time', min: 40, max: 320, step: 10, value: 120, unit: ' ticks' }
+        },
+        run: function (p) {
+            spawning = false;
+            spawn({
+                particleCount: p.particleCount,
+                spread: 70,
+                originY: 0.6,
+                startVelocity: p.startVelocity,
+                gravity: p.gravity,
+                ticks: p.ticks,
+                stickChance: 0.4
+            });
+            pump();
+        }
+    },
+
+    fireworks: {
+        label: 'Fireworks',
+        params: {
+            interval: { label: 'release frequency', min: 100, max: 900, step: 20, value: 420, unit: 'ms' },
+            duration: { label: 'duration', min: 1000, max: 12000, step: 250, value: 6500, unit: 'ms' },
+            startVelocity: { label: 'launch speed', min: 8, max: 60, step: 1, value: 19 },
+            gravity: { label: 'gravity', min: 0.1, max: 2, step: 0.05, value: 0.45 },
+            ticks: { label: 'settling time', min: 40, max: 320, step: 10, value: 165, unit: ' ticks' },
+            perBurst: { label: 'particles per burst', min: 10, max: 120, step: 5, value: 62 }
+        },
+        run: function (p) {
+            const end = Date.now() + p.duration;
+            const base = {
+                startVelocity: p.startVelocity,
+                spread: 360,
+                ticks: p.ticks,
+                decay: 0.935,
+                gravity: p.gravity,
+                stickChance: 0.06
+            };
+
+            spawning = true;
+
+            const iv = setInterval(function () {
+                const left = end - Date.now();
+                if (left <= 0) {
+                    spawning = false;
+                    return clearInterval(iv);
+                }
+                // Volleys thin out towards the end so it tails off rather than stopping dead.
+                const count = Math.ceil(p.perBurst * (left / p.duration));
+                spawn(Object.assign({}, base, {
+                    particleCount: count,
+                    originX: randomInRange(0.1, 0.35),
+                    originY: Math.random() * 0.45
+                }));
+                spawn(Object.assign({}, base, {
+                    particleCount: count,
+                    originX: randomInRange(0.65, 0.9),
+                    originY: Math.random() * 0.45
+                }));
+                pump();
+            }, p.interval);
+
+            handles.push({ kind: 'interval', id: iv });
+        }
+    },
+
+    /* The combined one. A curtain falls the full width from above the top edge
+       while two low cannons throw confetti up into the header from the bottom
+       corners, so the middle fills without everything arriving from one place. */
+    combined: {
+        label: 'Combined fall',
+        params: {
+            duration: { label: 'duration', min: 800, max: 8000, step: 200, value: 2600, unit: 'ms' },
+            interval: { label: 'release frequency', min: 60, max: 500, step: 10, value: 130, unit: 'ms' },
+            curtain: { label: 'particles per release', min: 2, max: 40, step: 1, value: 13 },
+            gravity: { label: 'gravity', min: 0.1, max: 1.6, step: 0.05, value: 0.5 },
+            driftJitter: { label: 'sideways drift', min: 0, max: 3, step: 0.1, value: 1.3 },
+            ticks: { label: 'settling time', min: 40, max: 320, step: 10, value: 150, unit: ' ticks' }
+        },
+        run: function (p) {
+            const end = Date.now() + p.duration;
+            spawning = true;
+
+            const iv = setInterval(function () {
+                if (Date.now() > end) {
+                    spawning = false;
+                    return clearInterval(iv);
+                }
+
+                spawn({
+                    particleCount: p.curtain,
+                    angle: 270,
+                    spread: 130,
+                    startVelocity: 6,
+                    decay: 0.94,
+                    gravity: p.gravity,
+                    ticks: p.ticks,
+                    originY: -0.06,
+                    originXSpread: true,
+                    driftJitter: p.driftJitter,
+                    stickChance: 0.55
+                });
+
+                const upward = {
+                    particleCount: 4,
+                    spread: 50,
+                    startVelocity: 34,
+                    decay: 0.92,
+                    gravity: p.gravity + 0.05,
+                    ticks: p.ticks,
+                    originY: 0.62,
+                    driftJitter: p.driftJitter * 0.5,
+                    stickChance: 0.55
+                };
+                spawn(Object.assign({}, upward, { angle: 72, originX: 0.06 }));
+                spawn(Object.assign({}, upward, { angle: 108, originX: 0.94 }));
+
+                pump();
+            }, p.interval);
+
+            handles.push({ kind: 'interval', id: iv });
+        }
+    },
+
+    cannons: {
+        label: 'Side cannons',
+        params: {
+            duration: { label: 'duration', min: 500, max: 8000, step: 100, value: 700, unit: 'ms' },
+            perFrame: { label: 'particles per side', min: 1, max: 8, step: 1, value: 1 },
+            startVelocity: { label: 'launch speed', min: 20, max: 110, step: 1, value: 34 },
+            gravity: { label: 'gravity', min: 0.2, max: 2, step: 0.05, value: 0.8 },
+            ticks: { label: 'settling time', min: 40, max: 320, step: 10, value: 100, unit: ' ticks' }
+        },
+        run: function (p) {
+            const end = Date.now() + p.duration;
+            const base = {
+                particleCount: p.perFrame,
+                spread: 55,
+                startVelocity: p.startVelocity,
+                gravity: p.gravity,
+                ticks: p.ticks,
+                originY: 0.55,
+                stickChance: 0.09
+            };
+
+            spawning = true;
+
+            (function frame() {
+                if (Date.now() > end) {
+                    spawning = false;
+                    return;
+                }
+                spawn(Object.assign({}, base, { angle: 60, originX: 0 }));
+                spawn(Object.assign({}, base, { angle: 120, originX: 1 }));
+                pump();
+                handles.push({ kind: 'raf', id: requestAnimationFrame(frame) });
+            })();
+        }
+    }
+};
+
+/* Shared across every variant — how much confetti is left behind, and how far
+   down the screen it is allowed to come to rest. */
+const GLOBALS = {
+    keep: { label: 'particles kept', min: 0, max: 90, step: 1, value: 0 },
+    band: { label: 'settle area', min: 20, max: 100, step: 1, value: 34, unit: '%' },
+    yOffset: { label: 'vertical position (Y)', min: -50, max: 50, step: 1, value: -20, unit: '%' }
+};
+
+
+const controls=document.getElementById('controls');
+const initial=JSON.parse(JSON.stringify({params:VARIANTS.cannons.params,globals:GLOBALS}));
+let tuneTimer;
+function play(){
+ clearTimers(); if(raf){cancelAnimationFrame(raf);raf=null;} particles=[];resting=0;resize();clearBoth();
+ if(REDUCED){document.getElementById('demo-status').textContent='Animation paused for your reduced-motion preference.';return;}
+ const args={};Object.keys(VARIANTS.cannons.params).forEach(k=>args[k]=VARIANTS.cannons.params[k].value);VARIANTS.cannons.run(args);
+ document.getElementById('demo-status').textContent='Playing the celebration';
+}
+function renderControls(){
+ const p=VARIANTS.cannons.params;
+ const fields=[['duration','Duration',p.duration,'ms'],['perFrame','Amount',p.perFrame,''],['startVelocity','Energy',p.startVelocity,''],['gravity','Gravity',p.gravity,'']];
+ controls.innerHTML='<span class="control-eyebrow">Make it yours</span><h2>Tune the celebration.</h2><p class="control-description">A few small changes. A different feel.</p>'+fields.map(([key,label,spec,unit])=>'<label class="simple-control"><span>'+label+'<output id="out-'+key+'">'+spec.value+unit+'</output></span><input type="range" data-key="'+key+'" aria-label="'+label+'" min="'+spec.min+'" max="'+spec.max+'" step="'+spec.step+'" value="'+spec.value+'"></label>').join('')+'<label class="settle-control"><span>Leave a little confetti</span><input id="keep-confetti" type="checkbox" '+(GLOBALS.keep.value?'checked':'')+'></label><div class="demo-actions"><button id="replay" type="button">Replay celebration</button><button id="reset" type="button">Reset</button></div><p id="demo-status" role="status" aria-live="polite">Ready to play</p>';
+ controls.querySelectorAll('input[type="range"]').forEach(input=>input.addEventListener('input',()=>{const key=input.dataset.key;VARIANTS.cannons.params[key].value=+input.value;document.getElementById('out-'+key).textContent=input.value+(key==='duration'?'ms':'');clearTimeout(tuneTimer);tuneTimer=setTimeout(play,180);}));
+ document.getElementById('keep-confetti').addEventListener('change',e=>{GLOBALS.keep.value=e.target.checked?24:0;play();});
+ document.getElementById('replay').addEventListener('click',play);
+ document.getElementById('reset').addEventListener('click',()=>{VARIANTS.cannons.params=JSON.parse(JSON.stringify(initial.params));Object.keys(GLOBALS).forEach(k=>GLOBALS[k].value=initial.globals[k].value);renderControls();play();});
+}
+renderControls();resize();
+const stage=document.getElementById('stage');
+new ResizeObserver(()=>{resize();}).observe(stage);
+new IntersectionObserver(entries=>{if(entries[0].isIntersecting){play();}else{clearTimers();if(raf)cancelAnimationFrame(raf);raf=null;}},{threshold:.1}).observe(stage);
+window.addEventListener('pagehide',()=>{clearTimers();clearTimeout(tuneTimer);if(raf)cancelAnimationFrame(raf);});
+const sendHeight=()=>parent.postMessage({type:'playground-confetti-height',height:Math.ceil(document.querySelector('.workbench').getBoundingClientRect().height)},location.origin);
+new ResizeObserver(sendHeight).observe(document.body);sendHeight();
+</script></body></html>

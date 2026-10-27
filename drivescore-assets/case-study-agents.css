@@ -1,0 +1,32 @@
+/* Shared portfolio credit component. Keep identity, contribution and impact together. */
+.powered-by-agents{--agent-accent:#baffee;display:grid;grid-template-columns:112px minmax(150px,.8fr) minmax(0,1.35fr) minmax(155px,.8fr);column-gap:24px;row-gap:20px;align-items:center;margin:36px 0 62px;padding:22px 26px 26px;border:1px solid #cbddf22b;border-radius:18px;background:radial-gradient(ellipse at 5% 100%,#6da4bf12,transparent 60%),#232a2d;box-shadow:inset 0 1px #ffffff04;color:#f1f1e9;scroll-margin-top:110px}
+.agent-card-label{grid-column:1/-1;font:600 10px/1.4 var(--sans);letter-spacing:.13em;text-transform:uppercase;color:#b8c9cc}
+.agent-card-avatar{position:relative;display:grid;place-items:center;width:112px;height:130px}
+.agent-card-avatar img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 10px #0002)}
+.powered-by-agents .agent-card-identity h3{font:400 28px/1.12 var(--serif);letter-spacing:-.015em;margin:0 0 8px;color:#f2f0e7}
+.agent-card-identity>span{font:400 12px/1.5 var(--sans);color:#aabcbf}
+.powered-by-agents .agent-card-description{font:400 15px/1.65 var(--sans);color:#c6d1d1;margin:0}
+.agent-card-impact{border-left:1px solid #cbddf226;padding-left:22px;align-self:stretch;display:flex;justify-content:center;flex-direction:column;gap:8px}
+.agent-card-impact>span{font:600 9px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#aabcbf}
+.powered-by-agents .agent-card-impact>strong{font:400 26px/1.16 var(--serif);color:var(--agent-accent);letter-spacing:-.02em}
+.powered-by-agents .agent-card-impact>p{font:400 12px/1.5 var(--sans);margin:0;color:#aabcbf}
+.usability-testing{margin:65px 0 70px;scroll-margin-top:110px}
+.usability-testing>h2{font:400 clamp(32px,3.8vw,44px)/1.15 var(--serif);margin:0 0 24px;color:var(--ink)}
+.usability-intro{max-width:940px;line-height:1.75;margin:0 0 32px}
+.usability-findings{display:grid;grid-template-columns:1fr 1fr;gap:42px;margin:35px 0 30px}
+.usability-findings>div{border-top:1px solid #baffee29;padding-top:23px}
+.usability-findings h3,.usability-trust h3{font:400 27px/1.2 var(--serif);margin:0 0 20px;color:#eeeede}
+.usability-findings ul{padding-left:19px;margin:0;list-style:disc}
+.usability-findings li{font:400 16px/1.65 var(--sans);color:#c9cfca;padding-left:4px;margin-bottom:10px}
+.usability-findings li::marker{color:#99beb1;font-size:.7em}
+.usability-trust{padding:4px 0 4px 23px;border-left:2px solid #b6e666;margin:32px 0 35px;max-width:940px}
+.usability-trust h3{font-size:25px;margin-bottom:14px}
+.usability-trust p{line-height:1.75;margin:0 0 16px}
+.usability-trust p:last-child{margin-bottom:0}
+.usability-testing .powered-by-agents{margin-bottom:0}
+@media(max-width:1000px) and (min-width:701px){.powered-by-agents{grid-template-columns:88px minmax(0,1fr) 170px;column-gap:22px}.agent-card-label{grid-column:1/-1;grid-row:1}.agent-card-avatar{grid-column:1;grid-row:2/4;width:88px;height:115px}.agent-card-identity{grid-column:2;grid-row:2}.agent-card-description{grid-column:2;grid-row:3}.agent-card-impact{grid-column:3;grid-row:2/4}.powered-by-agents .agent-card-identity h3{font-size:27px}}
+@media(max-width:700px){.usability-testing{margin:48px 0}.usability-testing>h2{font-size:32px}.usability-findings{grid-template-columns:1fr;gap:25px}.usability-findings h3{font-size:26px}.usability-findings li{font-size:16px}.usability-trust{padding-left:18px}.powered-by-agents{grid-template-columns:82px minmax(0,1fr);gap:16px;padding:20px;border-radius:16px;margin:28px 0 48px}.agent-card-label{grid-column:1/-1;grid-row:1;font-size:9px}.agent-card-avatar{grid-column:1;grid-row:2/4;width:82px;height:110px;align-self:start}.agent-card-identity{grid-column:2;grid-row:2}.powered-by-agents .agent-card-identity h3{font-size:26px;margin-bottom:5px}.agent-card-identity>span{font-size:11px}.powered-by-agents .agent-card-description{grid-column:2;grid-row:3;font-size:14px;line-height:1.65}.agent-card-impact{grid-column:1/-1;grid-row:4;border-left:0;border-top:1px solid #cbddf226;padding:17px 0 0;gap:7px}.powered-by-agents .agent-card-impact>strong{font-size:27px}.powered-by-agents .agent-card-impact>p{font-size:12px}}
+.usability-takeaway{margin:32px 0 35px}
+.usability-takeaway p{line-height:1.75;margin:14px 0 0}
+#quote-agent-feasibility{margin:64px 0;scroll-margin-top:110px}
+#quote-agent-feasibility h2{font:400 clamp(30px,3.8vw,40px)/1.2 var(--serif);margin:0 0 24px}
