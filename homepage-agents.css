@@ -1,0 +1,25 @@
+
+.portrait img{object-fit:contain;image-rendering:auto}.portrait{overflow:visible}.agent-modal{width:min(520px,calc(100vw - 32px));padding:24px;max-height:calc(100svh - 32px)}
+.agent-carousel{height:238px;margin:8px -24px 0}.agent-slide{width:210px;height:226px;margin-left:-105px;top:6px}.agent-slide img{image-rendering:auto;object-fit:contain;filter:grayscale(.75);opacity:.5;transition:filter .3s,opacity .3s}.agent-slide.is-selected img{filter:none;opacity:1}
+.selected-agent-name{font:400 clamp(23px,5vw,29px)/1.2 var(--serif);text-align:center;color:var(--ink);margin:14px 0 10px;min-height:1.2em}
+.agent-navigation{display:flex;align-items:center;justify-content:center;gap:18px;margin:0 0 16px}.agent-indicators{margin:0;min-height:36px;gap:6px}.agent-indicator,.agent-indicator[aria-pressed="true"]{width:24px;height:36px}.agent-indicator span,.agent-indicator[aria-pressed="true"] span{width:9px;height:9px;padding:0;font-size:0}.agent-indicator[aria-pressed="true"] span{background:var(--green)}
+.agent-navigation>button{width:36px;height:36px;border:1px solid #526637;border-radius:50%;background:#ffffff05;color:var(--ink);font:400 20px/1 var(--sans);cursor:pointer}.agent-navigation>button:disabled{opacity:.25;cursor:default}.agent-navigation>button:focus-visible{outline:2px solid var(--green);outline-offset:3px}.agent-description{min-height:132px;margin:0;line-height:1.5}
+@media(max-width:400px){.agent-modal{padding:20px}.agent-carousel{height:205px;margin-left:-20px;margin-right:-20px}.agent-slide{width:180px;height:194px;margin-left:-90px}.agent-description{min-height:156px;font-size:15px}.selected-agent-name{font-size:24px}}
+@media(prefers-reduced-motion:reduce){.agent-slide img{transition:none}}
+
+/* Restore the expanding name pills; keep side portraits separate from the focus image. */
+.selected-agent-name,.agent-navigation>button{display:none}
+.agent-navigation{margin:10px 0 18px;gap:0}.agent-indicators{gap:5px;min-height:44px;max-width:100%;justify-content:center}
+.agent-indicator{flex-shrink:0;transition:width .3s;width:24px;height:44px}
+.agent-indicator span{width:10px;height:10px;background:#2d3b20;transition:width .3s,height .3s,padding .3s}
+.agent-indicator[aria-pressed="true"]{width:calc(var(--pill-chars)*.48rem + 30px)}
+.agent-indicator[aria-pressed="true"] span{width:calc(var(--pill-chars)*.48rem + 26px);height:30px;padding:4px 10px;font-size:.9375rem;line-height:22px;background:#2d3b20;color:var(--green)}
+@media(max-width:400px){.agent-indicators{gap:3px}.agent-indicator{width:21px}.agent-indicator[aria-pressed="true"]{width:calc(var(--pill-chars)*.44rem + 24px)}.agent-indicator[aria-pressed="true"] span{width:calc(var(--pill-chars)*.44rem + 20px);font-size:.875rem;padding:4px 8px}}
+@media(max-width:400px){.agent-navigation,.agent-indicators{width:100%}.agent-indicator{width:18px}.agent-indicator[aria-pressed="true"]{max-width:calc(100% - 63px)}.agent-indicator[aria-pressed="true"] span{max-width:100%;font-size:clamp(11px,3.3vw,14px)}}
+
+/* A tighter selector trail; only the final inactive dot is 15% smaller. */
+.agent-indicators{gap:2px}.agent-indicator{width:21px}
+.agent-indicator:last-child:not([aria-pressed="true"]) span{transform:scale(.85)}
+.agent-indicator:last-child[aria-pressed="true"] span{transform:none}
+.agent-description{min-height:160px}
+@media(max-width:400px){.agent-indicators{gap:1px}.agent-indicator{width:18px}.agent-description{min-height:200px}}
