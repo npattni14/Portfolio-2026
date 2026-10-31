@@ -3,19 +3,27 @@
   const journeyHost=document.getElementById('journey-animation');
   const journeyToggle=document.getElementById('journey-animation-toggle');
   if(journeyHost&&window.lottie){
-    const animation=lottie.loadAnimation({container:journeyHost,renderer:'svg',loop:true,autoplay:false,path:'drivescore-assets/playground-assets/quote-agent-journey.json',rendererSettings:{preserveAspectRatio:'xMidYMid meet'}});
+    const animation=lottie.loadAnimation({container:journeyHost,renderer:'svg',loop:true,autoplay:false,path:'drivescore-assets/playground-assets/quote-agent-journey.json?v=right-phone-1',rendererSettings:{preserveAspectRatio:'xMidYMid meet'}});
+    const checklist=document.createElement('div');checklist.className='journey-loading-checklist';checklist.setAttribute('aria-hidden','true');
+    const labels=['Reviewing your updates','Switching to pay Annually','Increasing voluntary excess','Sharing your Driving licence number','Finding your best prices'];
+    const starts=[30,120,230,340,450],ends=[120,230,340,450,560];
+    labels.forEach((label,i)=>{const row=document.createElement('div');row.className='journey-loading-row';row.dataset.index=String(i);row.dataset.state='waiting';const icon=document.createElement('span');icon.className='journey-row-icon';const text=document.createElement('span');text.textContent=label;row.append(icon,text);checklist.append(row);});
+    journeyHost.append(checklist);
+    function renderChecklist(frame){checklist.querySelectorAll('.journey-loading-row').forEach((row,i)=>{const state=frame>=ends[i]?'done':frame>=starts[i]?'working':'waiting';if(row.dataset.state!==state){row.dataset.state=state;row.querySelector('.journey-row-icon').textContent=state==='done'?'✓':'';}});}
     let paused=reduced.matches,visible=false,ready=false;
     const sync=()=>{
+      journeyHost.dataset.paused=String(paused||!visible);
       journeyToggle.textContent=paused?'Play animation':'Pause animation';
       journeyToggle.setAttribute('aria-pressed',String(paused));
       if(ready){if(visible&&!paused)animation.play();else animation.pause();}
     };
     animation.addEventListener('DOMLoaded',()=>{ready=true;journeyHost.classList.add('is-ready');if(paused)animation.goToAndStop(1020,true);sync();});
     animation.addEventListener('enterFrame',event=>{
+      renderChecklist(event.currentTime);
       const phase=event.currentTime<672?'loading':'saving';
       if(journeyHost.dataset.phase!==phase){
         journeyHost.dataset.phase=phase;
-        journeyHost.setAttribute('aria-label',phase==='loading'?'Quote Agent is reviewing the driver’s changes':'Quote Agent found a £15 annual saving and celebrates with confetti');
+        journeyHost.setAttribute('aria-label',phase==='loading'?'Quote Agent is reviewing the driver’s changes':'Quote Agent found a £98 annual saving and celebrates with confetti');
       }
     });
     new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();},{threshold:.2}).observe(journeyHost);

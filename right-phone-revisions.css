@@ -1,0 +1,33 @@
+
+/* Match the first two phones' lift, moving the frame and animated screen together. */
+.journey-animation-frame{transition:transform .25s ease}.journey-animation-frame:hover{transform:translateY(-6px)}
+.journey-screen-animation{container-type:inline-size}
+.journey-loading-checklist{position:absolute;inset:0;z-index:2;pointer-events:none;font-family:QA Averta,-apple-system,BlinkMacSystemFont,sans-serif}
+.journey-loading-row{position:absolute;left:3.804%;width:92.572%;height:4.589%;display:flex;align-items:center;gap:3.1cqw;padding:0 3.62cqw;box-sizing:border-box;border-radius:1.8cqw;background:#38677f;color:#fff;font-size:4.17cqw;font-weight:600;line-height:1.15;opacity:1}
+.journey-loading-row:nth-child(1){top:50.476%}.journey-loading-row:nth-child(2){top:56.883%}.journey-loading-row:nth-child(3){top:63.29%}.journey-loading-row:nth-child(4){top:69.697%;height:5.887%}.journey-loading-row:nth-child(5){top:77.403%}
+.journey-row-icon{flex:0 0 5.8cqw;width:5.8cqw;height:5.8cqw;box-sizing:border-box;border: .45cqw solid #baffee66;border-radius:50%;display:grid;place-items:center;font-size:4.4cqw;line-height:1;color:#2c3d5e}
+.journey-loading-row[data-state="working"] .journey-row-icon{border-color:#baffee44;border-top-color:#baffee;animation:journey-row-spin .7s linear infinite}
+.journey-loading-row[data-state="done"] .journey-row-icon{background:#baffee;border-color:#baffee}
+.journey-screen-animation[data-phase="saving"] .journey-loading-checklist{visibility:hidden}
+.motion-paused .journey-row-icon,.journey-screen-animation[data-paused="true"] .journey-row-icon{animation-play-state:paused!important}
+@keyframes journey-row-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.journey-animation-frame{transition:none}.journey-animation-frame:hover{transform:none}.journey-row-icon{animation:none!important}}
+
+/* The Smart adjustments illustration is static; the switch retains its own affordance. */
+#smart-adjustments .smart-phones{cursor:default;border:0;outline:0;box-shadow:none;padding:0;background:none}
+.combined-visual-heading{position:relative;inset:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:18px;min-height:96px}
+.combined-visual-heading>span,.combined-visual-heading:has(button[hidden])>span{max-width:none}
+.delivery-phase-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.combined-visual-heading .delivery-phase-controls button{display:grid;place-items:center;flex-shrink:0;width:40px;height:40px;padding:0;margin:0;border-radius:50%;border:1px solid #ffffff35;background:#15232f45;backdrop-filter:blur(18px);color:#fff;cursor:pointer}
+.combined-visual-heading .delivery-phase-controls button[hidden]{display:none}
+.combined-visual-heading .delivery-phase-controls button:hover{background:#ffffff28}
+.combined-visual-heading .delivery-phase-controls button:focus-visible{outline:2px solid #baffee;outline-offset:4px}
+.delivery-phase-arrow svg{display:block}
+.phase-core{padding-top:26px}.phase-gtm{padding-top:24px}
+@media(max-width:650px){.combined-visual-heading{gap:12px;padding:20px 18px;min-height:90px}.combined-visual-heading>span{font-size:28px}.delivery-phase-controls{gap:6px}.combined-visual-heading .delivery-phase-controls button{width:34px;height:34px}.phase-core{padding-top:20px}.phase-gtm{padding-top:20px}}
+
+/* Keep the original section disclosure treatment at every viewport width. */
+.playground-contents{border:1px solid #45483c;border-radius:12px;padding:16px 20px}
+.playground-contents summary{cursor:pointer;color:var(--green)}
+.playground-contents nav{display:grid;gap:12px;padding:20px 0 8px}
+.playground-contents a{font-size:1rem;text-decoration:none}
